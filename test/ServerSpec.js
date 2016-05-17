@@ -59,11 +59,11 @@ describe('', function() {
       });
   });
 
-  describe('Link creation:', function() {
+  xdescribe('Link creation:', function() {
 
     var requestWithSession = request.defaults({jar: true});
 
-    xbeforeEach(function(done) {
+    beforeEach(function(done) {
       // create a user that we can then log-in with
       new User({
         'username': 'Phillip',
@@ -101,7 +101,7 @@ describe('', function() {
       });
     });
 
-    describe('Shortening links:', function() {
+    xdescribe('Shortening links:', function() {
 
       var options = {
         'method': 'POST',
@@ -150,7 +150,7 @@ describe('', function() {
 
     }); // 'Shortening links'
 
-    describe('With previously saved urls:', function() {
+    xdescribe('With previously saved urls:', function() {
 
       var link;
 
@@ -238,7 +238,7 @@ describe('', function() {
 
   }); // 'Priviledged Access'
 
-  xdescribe('Account Creation:', function() {
+  describe('Account Creation:', function() {
 
     it('Signup creates a user record', function(done) {
       var options = {
@@ -268,7 +268,7 @@ describe('', function() {
       });
     });
 
-    it('Signup logs in a new user', function(done) {
+    xit('Signup logs in a new user', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/signup',
@@ -286,7 +286,7 @@ describe('', function() {
 
   }); // 'Account Creation'
 
-  xdescribe('Account Login:', function() {
+  describe('Account Login:', function() {
 
     var requestWithSession = request.defaults({jar: true});
 
@@ -299,7 +299,7 @@ describe('', function() {
       });
     });
 
-    it('Logs in existing users', function(done) {
+    xit('Logs in existing users', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/login',
@@ -315,7 +315,7 @@ describe('', function() {
       });
     });
 
-    it('Users that do not exist are kept on login page', function(done) {
+    xit('Users that do not exist are kept on login page', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/login',

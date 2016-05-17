@@ -75,6 +75,27 @@ function(req, res) {
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
+app.get('/', function(req, res) {
+  res.send('signup');
+});
+app.get('/signup', function(req, res) {
+  res.render('signup');
+});
+
+
+
+app.post('/signup', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  var newUser = new User({'username': username, 'password': password});
+  newUser.save();
+  console.log('response =========== :', res);
+  // send reponse redirecting
+  // res.render('signup');
+  // if user doesn't exist 
+});
+
+
 
 
 
