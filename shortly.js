@@ -23,25 +23,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/', 
-function(req, res) {
+
+var session = require('express-session');
+app.use(session({
+  secret: 'arbitary top secret data, used for salting',
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.get('/', util.checkUser, function(req, res) {
+  res.render('/index');
+});
+
+app.get('/create', util.checkUser, function(req, res) {
   res.render('index');
 });
 
-app.get('/create', 
-function(req, res) {
-  res.render('index');
-});
-
-app.get('/links', 
-function(req, res) {
+app.get('/links', util.checkUser, function(req, res) {
   Links.reset().fetch().then(function(links) {
     res.status(200).send(links.models);
   });
 });
 
-app.post('/links', 
-function(req, res) {
+app.post('/links', util.checkUser, function(req, res) {
   var uri = req.body.url;
 
   if (!util.isValidUrl(uri)) {
@@ -89,7 +93,6 @@ app.post('/signup', function(req, res) {
   var password = req.body.password;
   var newUser = new User({'username': username, 'password': password});
   newUser.save();
-  console.log('response =========== :', res);
   // send reponse redirecting
   // res.render('signup');
   // if user doesn't exist 
