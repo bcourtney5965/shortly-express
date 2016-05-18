@@ -49,38 +49,104 @@ app.post('/links', util.checkUser, function(req, res) {
 
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
 app.get('/login', function(req, res) {
   res.send('login');
 });
+
 app.get('/signup', function(req, res) {
   res.render('signup');
 });
 
 app.get('/logout', function(req, res) {
+
+
+
 });
 
 app.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
+
+// if username exists
+  new User({username: username}).fetch().then(function(user) {
+    if (!user) {
+      return res.redirect('/login');
+    }
+    bcrypt.compare(password, user.get('password'), function(err, match) {
+      // if match create session and redirect
+      if (match) {
+        util.createSession(req, res, user);
+      } else { // relse redirect login
+        res.redirect('/login');
+      }
+    });
+  });
+  
+
+
+
 });
 
 app.post('/signup', function(req, res) {
-  
+  var username = req.body.username;
+  var password = req.body.password;
+
+  new User({username: username})
+    .fetch()
+    .then(function(user) {
+      if (!user) {
+        // if userdoens't exist 
+        bcrypt.hash(password, null, null, function(err, hash) {
+          Users.create({
+            username: username,
+            password: hash
+          }).then(function(user) {
+            util.createSession(req, res, user);
+          });
+        });
+      } else {
+        console.log('Already taken!');
+        res.redirect('/signup');
+      }
+    });
+
+
 });
 
 
-// app.post('/signup', function(req, res) {
-//   var username = req.body.username;
-//   var password = req.body.password;
-//   var newUser = new User({'username': username, 'password': password});
-//   newUser.save();
-//   // send reponse redirecting
-//   // res.render('signup');
-//   // if user doesn't exist 
-// });
 
 
 
