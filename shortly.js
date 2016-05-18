@@ -46,57 +46,41 @@ app.get('/links', util.checkUser, function(req, res) {
 });
 
 app.post('/links', util.checkUser, function(req, res) {
-  var uri = req.body.url;
 
-  if (!util.isValidUrl(uri)) {
-    console.log('Not a valid url: ', uri);
-    return res.sendStatus(404);
-  }
-
-  new Link({ url: uri }).fetch().then(function(found) {
-    if (found) {
-      res.status(200).send(found.attributes);
-    } else {
-      util.getUrlTitle(uri, function(err, title) {
-        if (err) {
-          console.log('Error reading URL heading: ', err);
-          return res.sendStatus(404);
-        }
-
-        Links.create({
-          url: uri,
-          title: title,
-          baseUrl: req.headers.origin
-        })
-        .then(function(newLink) {
-          res.status(200).send(newLink);
-        });
-      });
-    }
-  });
 });
 
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
-app.get('/', function(req, res) {
-  res.send('signup');
+app.get('/login', function(req, res) {
+  res.send('login');
 });
 app.get('/signup', function(req, res) {
   res.render('signup');
 });
 
+app.get('/logout', function(req, res) {
+});
 
-
-app.post('/signup', function(req, res) {
+app.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var newUser = new User({'username': username, 'password': password});
-  newUser.save();
-  // send reponse redirecting
-  // res.render('signup');
-  // if user doesn't exist 
 });
+
+app.post('/signup', function(req, res) {
+  
+});
+
+
+// app.post('/signup', function(req, res) {
+//   var username = req.body.username;
+//   var password = req.body.password;
+//   var newUser = new User({'username': username, 'password': password});
+//   newUser.save();
+//   // send reponse redirecting
+//   // res.render('signup');
+//   // if user doesn't exist 
+// });
 
 
 
